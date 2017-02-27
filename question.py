@@ -16,7 +16,7 @@ class question(object):
     #Initialize
     def __init__(self):
         self.__prompt = ""
-        self.__questionID = "201" #+ randint(1000, 9999).str()
+        self.__questionID = "201" + randint(1000, 9999).str()
         
     #Properties
     @property
@@ -29,7 +29,7 @@ class question(object):
 
     #Setters
     @prompt.setter
-    def prompt(self, newPrompt):
+    def sePrompt(self, newPrompt):
         self.__prompt = newPrompt
     
 #CHILD CLASS: TRUE FALSE
@@ -38,44 +38,37 @@ class trueFalse(question):
     true false is a child class.  It holds the:
     true prompt
     false prompt
+    tag
     '''
     def __init__(self):
         super().__init__()
-        self.__truePrompt = ""
-        self.__falsePrompt = ""
+        self.__tag = "TF"
         
     #Properties
     @property
-    def truePrompt(self):
-        return self.__truePrompt
-    
-    @property
-    def falsePrompt(self):
-        return self.__falsePrompt
-    
-    #Setters
-    @truePrompt.setter
-    def setTruePrompt(self, newTruePrompt):
-        self.__truePrompt = newTruePrompt
-        
-    @falsePrompt.setter
-    def setFalsePrompt(self, newFalsePrompt):
-        self.__falsePrompt = newFalsePrompt  
+    def tag(self):
+        return self.__tag
         
 #CHILD CLASS: MULTIPLE CHOICE
-class multipleChouse(question):
+class multipleChoice(question):
     '''
     multiple choice is a child class.  It holds the:
     dictionary of options
+    tag
     '''
     def __init__(self):
         super().__init__()
         self.__options = {}
+        self.__tag = "MC"
         
     #Properties
     @property
     def options(self):
         return self.__options
+    
+    @property
+    def tag(self):
+        return self.__tag
     
     #Setters
     @options.setter
@@ -91,15 +84,21 @@ class shortAnswer(question):
     '''
     short answer is a child class.  It hold the:
     character limit
+    tag
     '''
     def __init__(self):
         super().__init__()
         self.__charLimit = 0
+        self.__tag = "SA"
         
     #Properties
     @property
     def charLimit(self):
         return self.__charLimit
+    
+    @property
+    def tag(self):
+        return self.__tag
     
     #Setters
     @charLimit.setter
@@ -111,15 +110,21 @@ class essay(question):
     '''
     essay is a child class.  It hold the:
     minimum characters
+    tag
     '''
     def __init__(self):
         super().__init__()
         self.__minChars = 0
+        self.__tag = "ES"
         
     #Properties
     @property
     def minChars(self):
         return self.__minChars
+    
+    @property
+    def tag(self):
+        return self.__tag
     
     #Setters
     @minChars.setter
@@ -134,6 +139,7 @@ class matching(question):
     left options
     right options
     option count
+    tag
     '''
     def __init__(self):
         super().__init__()
@@ -141,6 +147,7 @@ class matching(question):
         self.__leftOptions = []
         self.__rightOptions = []
         self.__optionCount = 0
+        self.__tag = "MA"
                 
     #Properties
     @property
@@ -158,6 +165,10 @@ class matching(question):
     @property
     def optionCount(self):
         return self.__optionCount
+    
+    @property
+    def tag(self):
+        return self.__tag
     
     #Setters
     @numOptions.setter
@@ -182,3 +193,31 @@ class matching(question):
         else:
             print("Error: Number of options has already reached max.")            
         
+#CHILD CLASS: MULTIPLE CHOICE
+class ranking(question):
+    '''
+    ranking question is a child class.  It holds the:
+    dictionary of options (number being key)
+    tag
+    '''
+    def __init__(self):
+        super().__init__()
+        self.__options = {}
+        self.__tag = "RA"
+        
+    #Properties
+    @property
+    def options(self):
+        return self.__options
+    
+    @property
+    def tag(self):
+        return self.__tag
+    
+    #Setters
+    @options.setter
+    def setOptions(self, newOptions):
+        self.__options = newOptions
+        
+    def addOption(self, newOption, key):
+        self.__options[key] = newOption
