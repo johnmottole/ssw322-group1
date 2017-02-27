@@ -1,6 +1,6 @@
 from tkinter import *
-from Questionnaire import Questionnaire
-from question import question
+from Questionnaire import *
+from question import *
 class MainMenu():
     def __init__(self, parent):
         self.var = IntVar()
@@ -92,6 +92,8 @@ class editQuizWindow():
         label.place(x = 250, y = 100, height = 30, width = 300)
         button.pack()
         button.place(x=325, y=150, height=30, width=150)
+        for q in self.questionnarire.question_list:
+            print(q.prompt)
     def addQuestion(self):
         self.frame.destroy()
         newWindow = addQuestionWindow(self.parent, self.questionnarire)
@@ -108,7 +110,7 @@ class addQuestionWindow():
         self.questionTypeChoice = StringVar()
     def displayWindow(self):
         label = Label(self.frame, text="Enter the question")
-        button = Button(self.frame, text="Next")
+        button = Button(self.frame, text="Next", command=self.continueToNextStep)
         label2 = Label(self.frame, text="What type of question is it?")
         label.pack()
         button.pack()
@@ -127,3 +129,14 @@ class addQuestionWindow():
             b.pack()
             b.place(x = 260, y = 250 + x)
             x = x + 30
+    def continueToNextStep(self):
+        if (self.questionTypeChoice.get() == 'TF'):
+            if self.questionnarire.tag == "survey":
+                question = trueFalse()
+                question.prompt = self.entry.get()
+                self.questionnarire.add_question(question)
+                self.frame.destroy()
+                newWindow = editQuizWindow(self.parent, self.questionnarire)
+                newWindow.displayWindow()
+
+

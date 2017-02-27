@@ -21,7 +21,7 @@ class Questionnaire(object):
 
     @property
     def question_list(self):
-        return self.question_list
+        return self._question_list
 
     def add_question(self, question):
-        self.question_list.append(question)
+        self._question_list.append(question)

@@ -16,7 +16,7 @@ class question(object):
     #Initialize
     def __init__(self):
         self.__prompt = ""
-        self.__questionID = "201" + randint(1000, 9999).str()
+        self.__questionID = "201" + str(randint(1000, 9999))
         
     #Properties
     @property
@@ -29,7 +29,7 @@ class question(object):
 
     #Setters
     @prompt.setter
-    def sePrompt(self, newPrompt):
+    def prompt(self, newPrompt):
         self.__prompt = newPrompt
     
 #CHILD CLASS: TRUE FALSE
