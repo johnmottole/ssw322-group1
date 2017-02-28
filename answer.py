@@ -83,7 +83,7 @@ class shortAnswerAnswer(answer):
     
     #Setters
     @answer.setter
-    def setAnswer(self, newAnswer):
+    def answer(self, newAnswer):
         self.__answer = newAnswer
         
 #CHILD CLASS: ESSAY ANSWER

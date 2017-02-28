@@ -149,6 +149,13 @@ class addQuestionWindow():
             self.frame.destroy()
             newWindow = getFinalInfoMCWindow(self.parent, self.questionnarire, mc_question)
             newWindow.displayWindow()
+        if self.questionTypeChoice.get() == 'SA':
+            sa_question = shortAnswer()
+            sa_question.prompt = self.entry.get()
+            self.frame.destroy()
+            newWindow = getFinalInfoSAWindow(self.parent, self.questionnarire, sa_question)
+            newWindow.displayWindow()
+
 class getFinalInfoOnQuestionWindow:
     def __init__(self, parent,questionnarire_object, question):
         self.var = IntVar()
@@ -229,11 +236,37 @@ class getFinalInfoMCWindow(getFinalInfoOnQuestionWindow):
         button.place(x = 375, y = 400,height=30, width=100 )
     def submit(self):
         for entry in self.entries:
-            self.choices.append(entry.get())
+            if entry.get != "":
+                self.choices.append(entry.get())
         self.question.options = self.choices
         if self.questionnarire.tag == "quiz":
-            correct_answer = multipleChoiceAnswer()
-            correct_answer = self.choice.get()
-            self.finishAddQuestion(correct_answer)
+            if self.entries[self.choice.get()]:
+                correct_answer = multipleChoiceAnswer()
+                correct_answer = self.choice.get()
+                self.finishAddQuestion(correct_answer)
         else:
             self.finishAddQuestionSurvey()
+class getFinalInfoSAWindow(getFinalInfoOnQuestionWindow):
+    def __init__(self, parent, questionare, question):
+        super().__init__(parent,questionare, question)
+        self.entry = Entry(self.frame)
+    def displayWindow(self):
+        if self.questionnarire.tag == "survey":
+            self.questionnarire.add_question(self.question)
+            self.frame.destroy()
+            newWindow = editQuizWindow(self.parent, self.questionnarire)
+            newWindow.displayWindow()
+        else:
+            label = Label(self.frame, text="What is the correct answer?")
+            label.pack()
+            label.place(x=200, y=75, height=30, width=400)
+            self.entry.pack()
+            self.entry.place(x=250, y=150, height=30, width=300)
+            button = Button(self.frame, text="Submit", command=self.submit)
+            button.pack()
+            button.place(x=350, y=225, height=30, width=100)
+    def submit(self):
+        ans_string = self.entry.get()
+        answer_obj = shortAnswerAnswer()
+        answer_obj.answer = ans_string
+        self.finishAddQuestion(answer_obj)
