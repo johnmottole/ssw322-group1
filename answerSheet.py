@@ -31,17 +31,16 @@ class answerSheet(object):
     @property
     def tag(self):
         return self.__tag
-    
-    @answers.setter
-    def setAnswer(self, newAnswers):
-        self.__answers = newAnswers
+
+    def addAnswer(self, newAnswers):
+        self.__answers.append(newAnswers)
         
     @name.setter
-    def setName(self, newName):
+    def name(self, newName):
         self.__name = newName
     
     @tag.setter
-    def setTag(self, newTag):
+    def tag(self, newTag):
         self.__tag = newTag
         
 

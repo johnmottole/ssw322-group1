@@ -72,7 +72,7 @@ class multipleChoice(question):
     
     #Setters
     @options.setter
-    def setOptions(self, newOptions):
+    def options(self, newOptions):
         self.__options = newOptions
         
     def addOption(self, newOption, key):

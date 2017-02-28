@@ -4,7 +4,6 @@ Header here
 
 #Imports
 from random import randint
-from ctypes.wintypes import BOOLEAN
 
 #SUPER CLASS: ANSWER
 class answer(object):
@@ -35,7 +34,7 @@ class trueFalseAnswer(answer):
     '''
     def __init__(self):
         super().__init__()
-        self.__answer = bool
+        self.__answer = " "
         
     #Properties
     @property
@@ -44,7 +43,7 @@ class trueFalseAnswer(answer):
     
     #Setters
     @answer.setter
-    def setAnswer(self, newAnswer):
+    def answer(self, newAnswer):
         self.__answer = newAnswer
         
 #CHILD CLASS: MULTIPLE CHOICE ANSWER
@@ -64,7 +63,7 @@ class multipleChoiceAnswer(answer):
     
     #Setters
     @answer.setter
-    def setAnswer(self, newAnswer):
+    def answer(self, newAnswer):
         self.__answer = newAnswer
 
 #CHILD CLASS: SHORT ANSWER ANSWER
@@ -143,6 +142,6 @@ class rankingAnswer(answer):
         return self.__answer
     
     #Setters
-    @options.setter
+    @answer.setter
     def setAnswer(self, newAnswer):
         self.__answer = newAnswer

@@ -3,6 +3,7 @@ class Questionnaire(object):
         self._name_id = name
         self._tag = tag
         self._question_list = []
+        self._answer_sheets = []
     @property
     def tag(self):
         return self._tag
@@ -25,3 +26,10 @@ class Questionnaire(object):
 
     def add_question(self, question):
         self._question_list.append(question)
+
+    @property
+    def answer_sheets(self):
+        return self._answer_sheets
+
+    def add_answerSheet(self, answer):
+        self._answer_sheets.append(answer)
