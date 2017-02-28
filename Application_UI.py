@@ -172,6 +172,11 @@ class getFinalInfoOnQuestionWindow:
         self.frame.destroy()
         newWindow = editQuizWindow(self.parent, self.questionnarire)
         newWindow.displayWindow()
+    def finishAddQuestionSurvey(self):
+        self.questionnarire.add_question(self.question)
+        self.frame.destroy()
+        newWindow = editQuizWindow(self.parent, self.questionnarire)
+        newWindow.displayWindow()
 class getFinalInfoTFWindow(getFinalInfoOnQuestionWindow):
     def __init__(self, parent, questionare, question):
         super().__init__(parent,questionare, question)
@@ -214,17 +219,21 @@ class getFinalInfoMCWindow(getFinalInfoOnQuestionWindow):
             entry1.pack()
             entry1.place(x=250, y = 150+i, height = 30, width = 300)
             self.entries.append(entry1)
-            radio1 = Radiobutton(self.frame, value=letter, indicatoron = TRUE, variable=self.choice)
-            radio1.pack()
-            radio1.place(x=550, y = 150+i, height = 30, width = 300)
+            if self.questionnarire.tag == "quiz":
+                radio1 = Radiobutton(self.frame, value=letter, indicatoron = TRUE, variable=self.choice)
+                radio1.pack()
+                radio1.place(x=550, y = 150+i, height = 30, width = 300)
             i = i + 50
         button = Button(self.frame, text="Submit", command=self.submit)
         button.pack()
-        button.place(x = 400, y = 400,height=30, width=100 )
+        button.place(x = 375, y = 400,height=30, width=100 )
     def submit(self):
         for entry in self.entries:
             self.choices.append(entry.get())
         self.question.options = self.choices
-        correct_answer = multipleChoiceAnswer()
-        correct_answer = self.choice.get()
-        self.finishAddQuestion(correct_answer)
+        if self.questionnarire.tag == "quiz":
+            correct_answer = multipleChoiceAnswer()
+            correct_answer = self.choice.get()
+            self.finishAddQuestion(correct_answer)
+        else:
+            self.finishAddQuestionSurvey()
