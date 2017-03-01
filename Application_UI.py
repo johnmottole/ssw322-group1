@@ -3,6 +3,7 @@ from Questionnaire import *
 from question import *
 from answer import *
 from answerSheet import *
+from Question_Displays_UI import *
 class MainMenu():
     def __init__(self, parent):
         self.var = IntVar()
@@ -23,6 +24,7 @@ class MainMenu():
         button1 = Button(self.frame, text="Exit", command=self.quit)
         button1.pack()
         button1.place(x = 350, y = 280, height = 30, width = 100)
+
 class createChooseQuizOrSurveyWindow():
     def __init__(self, parent):
         self.var = IntVar()
@@ -96,10 +98,22 @@ class editQuizWindow():
         button.place(x=325, y=150, height=30, width=150)
         if self.questionnarire.question_list:
             print("sup")
+        button2 = Button(self.frame, text="Preview", command=self.preview)
+        button2.pack()
+        button2.place(x=50, y=250, height=30, width=100)
     def addQuestion(self):
         self.frame.destroy()
         newWindow = addQuestionWindow(self.parent, self.questionnarire)
         newWindow.displayWindow()
+
+    def preview(self):
+        print(self.questionnarire.question_list)
+        if not self.questionnarire.question_list:
+            print(self.questionnarire.question_list)
+        if self.questionnarire.question_list[0].tag == "TF":
+            self.frame.destroy()
+            window = trueFalsePreviewWindow(self.parent, self.questionnarire, 0)
+            window.displayWindow()
 class addQuestionWindow():
     def __init__(self, parent,questionnarire_object):
         self.var = IntVar()
@@ -143,6 +157,7 @@ class addQuestionWindow():
         if (self.questionTypeChoice.get() == 'TF'):
             question = trueFalse()
             question.prompt = self.entry.get()
+            self.questionnarire.add_question(question)
             if self.questionnarire.tag == "survey":
                 self.frame.destroy()
                 newWindow = editQuizWindow(self.parent, self.questionnarire)
