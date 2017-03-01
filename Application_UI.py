@@ -3,7 +3,6 @@ from Questionnaire import *
 from question import *
 from answer import *
 from answerSheet import *
-from Question_Displays_UI import *
 class MainMenu():
     def __init__(self, parent):
         self.var = IntVar()
@@ -89,30 +88,18 @@ class editQuizWindow():
         self.frame.place(height = 600, width= 800)
         self.questionnarire = questionnarireObject
     def displayWindow(self):
-        button2 = Button(self.frame, text="Preview", command=self.preview)
-        button2.pack()
-        button2.place(x=50, y=250, height=30, width=100)
         label = Label(self.frame, text=self.questionnarire.name_id)
         button = Button(self.frame, text="Add A Question", command=self.addQuestion)
         label.pack()
         label.place(x = 250, y = 100, height = 30, width = 300)
         button.pack()
         button.place(x=325, y=150, height=30, width=150)
+        if self.questionnarire.question_list:
+            print("sup")
     def addQuestion(self):
         self.frame.destroy()
         newWindow = addQuestionWindow(self.parent, self.questionnarire)
         newWindow.displayWindow()
-    def preview(self):
-        if not self.questionnarire.question_list:
-            print("Empty")
-        print("Hello")
-        print(self.questionnarire.question_list)
-        print("Its me")
-        if self.questionnarire.question_list[0].tag == "TF":
-            window = trueFalsePreviewWindow(self.frame, self.questionnarire, 0)
-            self.frame.destroy()
-            window.displayWindow()
-
 class addQuestionWindow():
     def __init__(self, parent,questionnarire_object):
         self.var = IntVar()
@@ -126,13 +113,16 @@ class addQuestionWindow():
     def displayWindow(self):
         label = Label(self.frame, text="Enter the question")
         button = Button(self.frame, text="Next", command=self.continueToNextStep)
+        button2 = Button(self.frame, text = "Go Back" )#, command = self.toGetNameForQuizWindow)
         label2 = Label(self.frame, text="What type of question is it?")
         label.pack()
         button.pack()
+        button2.pack()
         label2.pack()
         self.entry.pack()
         label.place(x=200, y=50, height=30, width=300)
         button.place(x=600, y=500, height=30, width=100)
+        button2.place(x=350, y = 500, height = 30, width = 100)
         self.entry.place(x=200, y=100, height=30, width=300)
         label2.place(x=250, y=200, height=30, width=200)
         typesQ = [("Multiple Choice","MC"), ("True or False", "TF"), ("Short Answer", "SA"), ("Essay", "ES"), ("Matching", "MG"), ("Ranking", "RK")]
@@ -144,12 +134,16 @@ class addQuestionWindow():
             b.pack()
             b.place(x = 260, y = 250 + x)
             x = x + 30
+    def toGetNameForQuizWindow(self):
+        self.frame.destroy()
+        newWindow = getNameForQuizWindow(self.parent)
+        newWindow.getNameForQuizWindow()
+
     def continueToNextStep(self):
         if (self.questionTypeChoice.get() == 'TF'):
             question = trueFalse()
             question.prompt = self.entry.get()
             if self.questionnarire.tag == "survey":
-                self.questionnarire.add_question(question)
                 self.frame.destroy()
                 newWindow = editQuizWindow(self.parent, self.questionnarire)
                 newWindow.displayWindow()
@@ -169,6 +163,25 @@ class addQuestionWindow():
             self.frame.destroy()
             newWindow = getFinalInfoSAWindow(self.parent, self.questionnarire, sa_question)
             newWindow.displayWindow()
+        if self.questionTypeChoice.get() == 'ES':
+            es_question = essayAnswer()
+            es_question.prompt = self.entry.get()
+            self.frame.destroy()
+            newWindow = getFinalInfoESWindow(self.parent, self.questionnarire, es_question)
+            newWindow.displayWindow()
+        if self.questionTypeChoice.get() == 'MG':
+            mg_question = matchingAnswer()
+            mg_question.prompt = self.entry.get()
+            self.frame.destroy()
+            newWindow = getFinalInfoMGWindow(self.parent, self.questionnarire, mg_question)
+            newWindow.displayWindow()
+        if self.questionTypeChoice.get() == 'RK':
+            rk_question = rankingAnswer()
+            rk_question.prompt = self.entry.get()
+            self.frame.destroy()
+            newWindow = getFinalInfoRKWindow(self.parent, self.questionnarire, rk_question)
+            newWindow.displayWindow()
+
 
 class getFinalInfoOnQuestionWindow:
     def __init__(self, parent,questionnarire_object, question):
@@ -284,3 +297,98 @@ class getFinalInfoSAWindow(getFinalInfoOnQuestionWindow):
         answer_obj = shortAnswerAnswer()
         answer_obj.answer = ans_string
         self.finishAddQuestion(answer_obj)
+class getFinalInfoESWindow(getFinalInfoOnQuestionWindow):
+    def __init__(self, parent, questionare, question):
+        super().__init__(parent, questionare, question)
+        self.entry = Entry(self.frame)
+    def displayWindow(self):
+        label = Label(self.frame, text = "What is your word limit?")
+        label.pack()
+        label.place(x = 100, y = 75, height = 30, width = 500)
+        button = Button(self.frame, text = "Submit", command = self.submit)
+        button.pack()
+        button.place(x = 375, y = 400, height = 30, width = 100)
+    def submit(self):
+        ans_string = self.entry.get()
+        answer_obj = shortAnswerAnswer()
+        answer_obj.answer = ans_string
+        self.finishAddQuestion(answer_obj)
+class getFinalInfoMGWindow(getFinalInfoOnQuestionWindow):
+    def __init__(self, parent, questionare, question):
+        super().__init__(parent, questionare, question)
+        self.choice = IntVar()
+        self.entries = []
+        self.choices = []
+    def displayWindow(self):
+        if self.questionnarire.tag == 'survey':
+            message = "Put in choices"
+        else:
+            message = "Match the answers and choices"
+        label = Label(self.frame, text = message)
+        label.pack()
+        label.place(x = 200, y = 75, height = 30, width = 400)
+        options = [0, 1, 2, 3, 4]
+        i = 0
+        self.choice.set(0)
+        for letter in options:
+            entry1 = Entry(self.frame)
+            entry1.pack()
+            entry1.place(x=250, y=150 + i, height=30, width=300)
+            self.entries.append(entry1)
+            entry2 = Entry(self.frame)
+            entry1.pack()
+            entry2.place(x = 450, y = 150 +i, height = 30, width = 300)
+            self.entries.append(entry2)
+        button = Button(self.frame, text="Submit", command=self.submit)
+        button.pack()
+        button.place(x=375, y=400, height=30, width=100)
+def submit(self):
+    for entry in self.entries:
+        if entry.get != "":
+            self.choices.append(entry.get())
+    self.question.options = self.choices
+    if self.questionnarire.tag == "quiz":
+        if self.entries[self.choice.get()]:
+            correct_answer = matchingAnswer()
+            correct_answer = self.choice.get()
+            self.finishAddQuestion(correct_answer)
+    else:
+        self.finishAddQuestionSurvey()
+class getFinalInfoRKWindow (getFinalInfoOnQuestionWindow):
+    def __init__(self, parent, questionare, question):
+        super().__init__(parent, questionare, question)
+        self.choice = IntVar()
+        self.entries = []
+        self.choices = []
+    def displayWindow(self):
+        message = "Rank from greatest to least"
+        if self.questionnarire.tag == "survey":
+            message = "List the options"
+        label = Label(self.frame, text =message)
+        label.pack()
+        label.place(x=200, y=75, height = 30, width = 400)
+        options = [0,1,2,3,4]
+        i = 0
+        self.choice.set(0)
+        for letter in options:
+            entry1 = Entry(self.frame)
+            entry1.pack()
+            entry1.place(x=250, y= 150 +i, height = 30, width = 300)
+            self.entries.append(entry1)
+        i = i+50
+        button = Button(self.frame, text = "Submit", command = self.submit)
+        button.pack()
+        button.place (x = 375, y = 400, height = 30, width = 100)
+    def submit(self):
+        for entry in self.entries:
+            if entry.get != "":
+                self.choices.append(entry.get())
+            self.question.options = self.choices
+            if self.questionnarire.tag == "quiz":
+                if self.entries[self.choice.get()]:
+                    correct_answer = rankingAnswer()
+                    correct_answer = self.choice.get()
+                    self.finishAddQuestion(correct_answer)
+            else:
+                self.finishAddQuestionSurvey()
+
