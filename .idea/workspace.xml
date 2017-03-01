@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="488ca288-21fc-4be9-8230-f793668c1835" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application_UI.py" afterPath="$PROJECT_DIR$/Application_UI.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -375,7 +374,14 @@
       <option name="project" value="LOCAL" />
       <updated>1488255210444</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="start of preview">
+      <created>1488346742386</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1488346742386</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -428,7 +434,8 @@
     <MESSAGE value="T/f and MC now work and can be saved to questionaire" />
     <MESSAGE value="T/f and MC bug fix" />
     <MESSAGE value="SA" />
-    <option name="LAST_COMMIT_MESSAGE" value="SA" />
+    <MESSAGE value="start of preview" />
+    <option name="LAST_COMMIT_MESSAGE" value="start of preview" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
