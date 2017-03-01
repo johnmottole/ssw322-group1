@@ -3,6 +3,7 @@ from Questionnaire import *
 from question import *
 from answer import *
 from answerSheet import *
+from Question_Displays_UI import *
 class MainMenu():
     def __init__(self, parent):
         self.var = IntVar()
@@ -88,18 +89,30 @@ class editQuizWindow():
         self.frame.place(height = 600, width= 800)
         self.questionnarire = questionnarireObject
     def displayWindow(self):
+        button2 = Button(self.frame, text="Preview", command=self.preview)
+        button2.pack()
+        button2.place(x=50, y=250, height=30, width=100)
         label = Label(self.frame, text=self.questionnarire.name_id)
         button = Button(self.frame, text="Add A Question", command=self.addQuestion)
         label.pack()
         label.place(x = 250, y = 100, height = 30, width = 300)
         button.pack()
         button.place(x=325, y=150, height=30, width=150)
-        if self.questionnarire.question_list:
-            print("sup")
     def addQuestion(self):
         self.frame.destroy()
         newWindow = addQuestionWindow(self.parent, self.questionnarire)
         newWindow.displayWindow()
+    def preview(self):
+        if not self.questionnarire.question_list:
+            print("Empty")
+        print("Hello")
+        print(self.questionnarire.question_list)
+        print("Its me")
+        if self.questionnarire.question_list[0].tag == "TF":
+            window = trueFalsePreviewWindow(self.frame, self.questionnarire, 0)
+            self.frame.destroy()
+            window.displayWindow()
+
 class addQuestionWindow():
     def __init__(self, parent,questionnarire_object):
         self.var = IntVar()
@@ -136,6 +149,7 @@ class addQuestionWindow():
             question = trueFalse()
             question.prompt = self.entry.get()
             if self.questionnarire.tag == "survey":
+                self.questionnarire.add_question(question)
                 self.frame.destroy()
                 newWindow = editQuizWindow(self.parent, self.questionnarire)
                 newWindow.displayWindow()
